@@ -35,6 +35,10 @@
       .done {
         text-decoration: line-through;
       }
+      .op {
+        opacity: 0.4;
+        cursor: not-allowed !important;
+      }
     </style>
   </head>
   <body>
@@ -121,14 +125,20 @@
               <div class="d-flex gap-3">`;
 
           if (v.done) {
-            viewData += `<i class="fa-solid fa-square-check" onclick="checked(${i}, )"></i>`;
+            viewData += `
+              <i class="fa-solid fa-square-check" onclick="checked(${i})"></i>
+              <i class="fa-regular fa-pen-to-square modi op"></i>
+              <i class="fa-solid fa-trash-can del op"></i>
+            `;
           } else {
-            viewData += `<i class="fa-regular fa-square-check" onclick="checked(${i})"></i>`;
+            viewData += `
+              <i class="fa-regular fa-square-check" onclick="checked(${i})"></i>
+              <i class="fa-regular fa-pen-to-square modi" onclick="modi(${i}, '${v.todo}')"></i>
+              <i class="fa-solid fa-trash-can del" onclick="del(${i})"></i>
+            `;
           }
 
           viewData += `
-                <i class="fa-regular fa-pen-to-square modi" onclick="modi(${i}, '${v.todo}')"></i>
-                <i class="fa-solid fa-trash-can del" onclick="del(${i})"></i>
               </div>
             </li>
           `;
