@@ -161,10 +161,13 @@
       }
 
       modifyBtnEl.addEventListener('click', () => {
-        btnEl.style.display = 'block';
-        modifyBtnEl.style.display = 'none';
-        listView[inpNumEl.value].todo = inputEl.value;
-        inputEl.value = '';
+        if (inputEl.value == '') alert('할 일을 입력해 주세요.');
+        else {
+          btnEl.style.display = 'block';
+          modifyBtnEl.style.display = 'none';
+          listView[inpNumEl.value].todo = inputEl.value;
+          inputEl.value = '';
+        }
         viewData();
       });
 
