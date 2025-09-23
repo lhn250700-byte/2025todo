@@ -29,7 +29,8 @@
       .viewList > li i {
         cursor: pointer;
       }
-      .inpModifyBtn {
+      .inpModifyBtn,
+      .inpCancelBtn {
         display: none;
       }
       .done {
@@ -49,7 +50,8 @@
           <input type="text" name="title" class="inp form-control me-2" placeholder="오늘의 할 일을 입력하세요." />
           <input type="hidden" class="inpNum" />
           <button type="submit" class="btn btn-primary inpBtn" style="width: 100px">입력</button>
-          <button type="submit" class="btn btn-danger inpModifyBtn" style="width: 100px">수정</button>
+          <button type="submit" class="btn btn-danger inpModifyBtn me-2" style="width: 100px">수정</button>
+          <button type="submit" class="btn btn-primary inpCancelBtn" style="width: 100px">취소</button>
         </div>
       </div>
       <div class="row px-3">
@@ -97,6 +99,7 @@
       const inpNumEl = document.querySelector('.inpNum');
       const btnEl = document.querySelector('.inpBtn');
       const modifyBtnEl = document.querySelector('.inpModifyBtn');
+      const cancelBtnEl = document.querySelector('.inpCancelBtn');
       const delAll = document.querySelector('.delAll');
       const modiEl = document.querySelector('.modi');
       const delEl = document.querySelector('.del');
@@ -108,14 +111,25 @@
             todo: inputEl.value,
             done: false,
           };
-          inputEl.value = '';
           listView.push(value);
+
+          // localstroage update
+          let valueData = JSON.stringify(listView);
+          localStorage.setItem('todoData', valueData);
+
+          inputEl.value = '';
           viewData();
         } else alert('오늘의 할 일을 입력하세요.');
       });
 
       // READ
       function viewData() {
+        // storage data exist
+        if (localStorage.length > 0) {
+          let localData = localStorage.getItem('todoData');
+          listView = JSON.parse(localData);
+        }
+
         let viewData = '';
 
         listView.forEach((v, i) => {
@@ -149,6 +163,7 @@
       // todo 체크
       function checked(i) {
         listView[i].done = !listView[i].done;
+        localStorage.setItem('todoData', JSON.stringify(listView));
         viewData();
       }
 
@@ -158,6 +173,7 @@
         inputEl.value = todo;
         btnEl.style.display = 'none';
         modifyBtnEl.style.display = 'block';
+        cancelBtnEl.style.display = 'block';
       }
 
       modifyBtnEl.addEventListener('click', () => {
@@ -165,16 +181,28 @@
         else {
           btnEl.style.display = 'block';
           modifyBtnEl.style.display = 'none';
+          cancelBtnEl.style.display = 'none';
           listView[inpNumEl.value].todo = inputEl.value;
+          localStorage.setItem('todoData', JSON.stringify(listView));
+
           inputEl.value = '';
         }
         viewData();
+      });
+
+      cancelBtnEl.addEventListener('click', () => {
+        inputEl.value = '';
+        btnEl.style.display = 'block';
+        modifyBtnEl.style.display = 'none';
+        cancelBtnEl.style.display = 'none';
       });
 
       // DETELE
       // 개별 삭제
       function del(i) {
         listView.splice(i, 1);
+        localStorage.setItem('todoData', JSON.stringify(listView));
+
         viewData();
       }
       viewData();
@@ -182,13 +210,14 @@
       // 전체 삭제
       delAll.addEventListener('click', () => {
         listView = [];
+        localStorage.setItem('todoData', JSON.stringify(listView));
         viewData();
       });
 
       /*
         개선 방향
         - done : true이면 수정, 삭제 금지 / text-decoration: line-through; 설정
-        - 
+        - 수정 누를 시 취소 버튼 추가
       */
     </script>
   </body>
