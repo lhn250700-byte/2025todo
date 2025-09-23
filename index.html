@@ -78,20 +78,7 @@
 
         */
 
-      let listView = [
-        {
-          todo: '자바',
-          done: false,
-        },
-        {
-          todo: '자바스크립트',
-          done: false,
-        },
-        {
-          todo: '도커',
-          done: true,
-        },
-      ];
+      let listView = [];
 
       // DOM
       const viewDataEl = document.querySelector('.viewList');
@@ -159,6 +146,7 @@
         });
         viewDataEl.innerHTML = viewData;
       }
+      viewData();
 
       // todo 체크
       function checked(i) {
@@ -205,7 +193,6 @@
 
         viewData();
       }
-      viewData();
 
       // 전체 삭제
       delAll.addEventListener('click', () => {
