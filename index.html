@@ -139,8 +139,8 @@
       // READ
       function viewData() {
         // storage data exist
-        if (localStorage.length > 0) {
-          let localData = localStorage.getItem('todoData');
+        let localData = localStorage.getItem('todoData');
+        if (localData) {
           listView = JSON.parse(localData);
         }
 
